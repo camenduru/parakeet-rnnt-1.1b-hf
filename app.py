@@ -1,15 +1,20 @@
 from nemo.collections.asr.models import EncDecRNNTBPEModel
+import yt_dlp as youtube_dl
+import os
+import tempfile
+import torch
 import gradio as gr
 from pydub import AudioSegment
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 MODEL_NAME="nvidia/parakeet-rnnt-1.1b"
+YT_LENGTH_LIMIT_S=3600
+
+model = EncDecRNNTBPEModel.from_pretrained(model_name=MODEL_NAME).to(device)
+model.eval()
 
 
 def get_transcripts(audio_path):
-
-    model = EncDecRNNTBPEModel.from_pretrained(model_name="nvidia/parakeet-rnnt-1.1b").to(device)
-    model.eval()
     text = model.transcribe([audio_path])[0][0]
     return text
 
@@ -65,7 +70,7 @@ def download_yt_audio(yt_url, filename):
             raise gr.Error(str(err))
 
 
-def yt_transcribe(yt_url, task, max_filesize=75.0):
+def yt_transcribe(yt_url, max_filesize=75.0):
     html_embed_str = _return_yt_html_embed(yt_url)
 
     with tempfile.TemporaryDirectory() as tmpdirname:
@@ -82,12 +87,11 @@ def yt_transcribe(yt_url, task, max_filesize=75.0):
 demo = gr.Blocks()
 
 mf_transcribe = gr.Interface(
-    fn=transcribe,
+    fn=get_transcripts,
     inputs=[
-        gr.inputs.Audio(source="microphone", type="filepath", optional=True)
+        gr.Audio(sources="microphone", type="filepath")
     ],
     outputs="text",
-    layout="horizontal",
     theme="huggingface",
     title="Parakeet RNNT 1.1B: Transcribe Audio",
     description=(
@@ -99,12 +103,11 @@ mf_transcribe = gr.Interface(
 )
 
 file_transcribe = gr.Interface(
-    fn=transcribe,
+    fn=get_transcripts,
     inputs=[
-        gr.inputs.Audio(source="upload", type="filepath", optional=True, label="Audio file"),
+        gr.Audio(sources="upload", type="filepath", label="Audio file"),
     ],
     outputs="text",
-    layout="horizontal",
     theme="huggingface",
     title="Parakeet RNNT 1.1B: Transcribe Audio",
     description=(
@@ -115,13 +118,12 @@ file_transcribe = gr.Interface(
     allow_flagging="never",
 )
 
-yt_transcribe = gr.Interface(
+youtube_transcribe = gr.Interface(
     fn=yt_transcribe,
     inputs=[
-        gr.inputs.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
+        gr.Textbox(lines=1, placeholder="Paste the URL to a YouTube video here", label="YouTube URL"),
     ],
     outputs=["html", "text"],
-    layout="horizontal",
     theme="huggingface",
     title="Parakeet RNNT 1.1B: Transcribe Audio",
     description=(
@@ -135,4 +137,4 @@ yt_transcribe = gr.Interface(
 with demo:
     gr.TabbedInterface([mf_transcribe, file_transcribe], ["Microphone", "Audio file"])
 
-demo.launch(enable_queue=True)
+demo.launch()
