@@ -1,0 +1,2 @@
+Cython
+nemo-toolkit[all]==1.21.0
