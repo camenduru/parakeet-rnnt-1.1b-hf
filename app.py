@@ -95,7 +95,7 @@ mf_transcribe = gr.Interface(
     title="Parakeet RNNT 1.1B: Transcribe Audio",
     description=(
         "Transcribe microphone or audio inputs with the click of a button! Demo uses the"
-        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and NVIDIA NeMo to transcribe audio files"
+        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and [NVIDIA NeMo](https://github.com/NVIDIA/NeMo) to transcribe audio files"
         " of arbitrary length."
     ),
     allow_flagging="never",
@@ -111,7 +111,7 @@ file_transcribe = gr.Interface(
     title="Parakeet RNNT 1.1B: Transcribe Audio",
     description=(
         "Transcribe microphone or audio inputs with the click of a button! Demo uses the"
-        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and NVIDIA NeMo(https://github.com/NVIDIA/NeMo) to transcribe audio files"
+        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and [NVIDIA NeMo](https://github.com/NVIDIA/NeMo) to transcribe audio files"
         " of arbitrary length."
     ),
     allow_flagging="never",
@@ -127,7 +127,7 @@ youtube_transcribe = gr.Interface(
     title="Parakeet RNNT 1.1B: Transcribe Audio",
     description=(
         "Transcribe microphone or audio inputs with the click of a button! Demo uses the"
-        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and NVIDIA NeMo to transcribe audio files"
+        f" checkpoint [{MODEL_NAME}](https://huggingface.co/{MODEL_NAME}) and [NVIDIA NeMo](https://github.com/NVIDIA/NeMo) to transcribe audio files"
         " of arbitrary length."
     ),
     allow_flagging="never",
