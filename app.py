@@ -136,4 +136,4 @@ youtube_transcribe = gr.Interface(
 with demo:
     gr.TabbedInterface([mf_transcribe, file_transcribe], ["Microphone", "Audio file"])
 
-demo.launch()
+demo.queue().launch(share=True)
